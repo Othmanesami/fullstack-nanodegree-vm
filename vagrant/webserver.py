@@ -18,8 +18,19 @@ class webserverHandler(BaseHTTPRequestHandler):
                 self.wfile.write(output)
                 print(output)
                 return
-            
 
+            if self.path.endswith('/holla'):
+                self.send_response(200)
+                self.send_header('Content-type', 'text/html')
+                self.end_headers()
+
+                output = ''
+                output += '<html><body>&#161Holla <a href = "/hello">back to hello page</a></body></html>'
+
+                self.wfile.write(output)
+                print(output)
+                return
+            
 
         except IOError:
 

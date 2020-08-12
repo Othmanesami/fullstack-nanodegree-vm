@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 app = Flask(__name__)
 
 
@@ -22,17 +22,7 @@ def hello(restaurant_id):
     restaurant = session.query(Restaurant).filter_by(id = restaurant_id)
     items = session.query(MenuItem).filter_by(restaurant_id= restaurant_id)
 
-    output = ''
-    for i in items:
-        output += '</br>'
-        output += i.name
-        output += '</br>'
-        output += i.price
-        output += '</br>'
-        output += i.description
-        output += '</br>'
-
-    return output
+    return render_template('menu.html', restaurant= restaurant, items= items)
 
 
 

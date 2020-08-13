@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
 app = Flask(__name__)
 
 
@@ -90,6 +90,25 @@ def deleteMenuItem(restaurant_id, menu_id):
         item = session.query(MenuItem).filter_by(restaurant_id= restaurant_id, id=menu_id).one()
         item_name = item.name
         return render_template('deletemenuItem.html', restaurant_id= restaurant_id, menu_id= menu_id, item_name=item_name)
+
+
+@app.route('/restaurants/<int:restaurant_id>/menu/JSON')
+def restaurantMenuJSON(restaurant_id):
+
+    session = DBSession()
+    items = session.query(MenuItem).filter_by(restaurant_id= restaurant_id)
+
+    return jsonify(MenuItems= [i.serialize for i in items])
+
+
+@app.route('/restaurants/<int:restaurant_id>/menu/<int:menu_id>/JSON')
+def restaurantMenuItemJSON(restaurant_id, menu_id):
+
+    session = DBSession()
+    item = session.query(MenuItem).filter_by(restaurant_id= restaurant_id, id= menu_id ).one()
+
+    return jsonify(item.serialize)
+
     
 
 
